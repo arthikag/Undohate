@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="webthemez">
+    <title>Text Analysis Result</title>
+	<!-- core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="static/css/animate.min.css" rel="stylesheet"> 
+    <link href="static/css/prettyPhoto.css" rel="stylesheet">
+    <link href="static/css/styles.css" rel="stylesheet"> 
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->       
+    <link rel="shortcut icon" href="https://st4.depositphotos.com/16030310/25187/v/600/depositphotos_251875546-stock-illustration-simple-vector-illustration-red-black.jpg"> 
+
+    <style>
+        table,th,td{
+            border: 2px solid white;
+            text-align: center;
+        }
+        #chartdiv , #chartdiv1 {
+            width: 100%;
+            height: 500px;
+            background-color:white;
+        }
+        video{
+            object-fit: contain;
+            max-width: 500px;
+            max-height: 700px;
+            width: auto;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav id="main-nav" class="navbar navbar-default navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><img class="navbar-brand-logo" src="static/images/logo.png" alt="logo"></a>
+                </div>
+				
+                <div class="collapse navbar-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li class="scroll"><a href="/">Home</a></li>
+                        <li class="scroll {% if type == 'text' %} active {% endif %}"><a href="/text">Text</a></li>
+                        <li class="scroll {% if type == 'image' %} active {% endif %}"><a href="/image">Image</a></li>
+                        <li class="scroll {% if type == 'video' %} active {% endif %}"><a href="/video">Video</a></li>
+                        <li class="scroll {% if type == 'audio' %} active {% endif %}"><a href="/audio">Audio</a></li>      
+                        <li class="scroll"><a href="/tweet">Tweets</a></li>                  
+                    </ul>
+                </div>
+            </div><!--/.container-->
+        </nav><!--/nav-->
+    </header><!--/header-->
+
+    <section id="contact">
+        <div class="container">
+            <div class="container contact-info">
+                <center>
+                    <div class="contact-form">
+                        <h1>Input</h1>
+
+                        {% if text == "video" %}             
+                            <video width="800" height="600" controls>
+                                <source src="file" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <br>
+                            <br>
+                        {% endif %}
+
+                        <p>{{text|safe}}</p>
+                    </div>
+
+                    {% if type == "image" %}
+                        <img src="imagefile/{{ file }}" height="400" width="400">
+                        <br>
+                        <br>
+                    {% endif %}
+
+                    {% if type == "audio" %}
+                    <audio controls>
+                        <source src="audiofile/{{ file }}" type="audio/ogg">
+                        <source src="audiofile/{{ file }}" type="audio/mp3">
+                        <source src="audiofile/{{ file }}" type="audio/flac">
+                        <source src="audiofile/{{ file }}" type="audio/3gp">
+                        <source src="audiofile/{{ file }}" type="audio/wav">
+                        <source src="audiofile/{{ file }}" type="audio/3g">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <br>
+                    <br>
+                    {% endif %}
+
+                    {% if type == "video" %}
+                        <video width="320" height="240" controls>
+                            <source src="videofile/{{ file }}" type="video/mp4">
+                            <source src="videofile/{{ file }}" type="video/mkv">
+                            <source src="videofile/{{ file }}" type="video/mov">
+                            <source src="videofile/{{ file }}" type="video/wmv">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+   
+                </center>  
+            </div>
+        </div>   
+   </section><!--/#bottom-->
+
+   <section id="business-stats">
+
+        {% if type == "image" %}
+            {% if emotionResult['isFace'] == True %}
+                <center>
+                    <h1>Face analysis results</h1>
+                    <h3>No. of faces : {{ emotionResult['noFace'] }}</h3>
+                    <h3>Most exhibited emotion : {{ emotionResult['emotion'] }}</h3>
+                    <br>
+                </center>
+                <div class="container">
+                    <div class="section-header">
+                        <div id="chartdiv">
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if hastext == True %}
+            <div class="container">
+                <div class="section-header">
+                    <center>
+                        <h1>Text analysis results</h1>
+                        <h3><strong style="font-size: larger; display: inline;"> {{ isHate }} </strong>content found</h3>
+                    </center>
+                    <br>
+                    <div id="chartdiv1">
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    &copy; 2021 Hack Frenzy.
+                </div>
+                <div class="col-sm-6">
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li> 
+                        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                        <li><a href="#"><i class="fa fa-github"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer><!--/#footer-->
+
+    <script src="static/js/jquery.js"></script>
+    <script src="static/js/bootstrap.min.js"></script> 
+    <script src="static/js/mousescroll.js"></script>
+    <script src="static/js/smoothscroll.js"></script>
+    <script src="static/js/jquery.prettyPhoto.js"></script>
+    <script src="static/js/jquery.isotope.min.js"></script>
+    <script src="static/js/jquery.inview.min.js"></script>
+    <script src="static/js/wow.min.js"></script>
+    <script src="static/js/custom-scripts.js"></script>
+
+</body>
+    
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+<!-- Chart code -->
+
+<script>
+    am5.ready(function() {
+
+    {% if type == "image" %}
+        {% if emotionResult['isFace'] == True %}
+
+            var root = am5.Root.new("chartdiv");
+            root.setThemes([
+            am5themes_Animated.new(root)
+            ]);
+            var chart = root.container.children.push(am5percent.PieChart.new(root, {
+            layout: root.verticalLayout
+            }));
+            var series = chart.series.push(am5percent.PieSeries.new(root, {
+            valueField: "value",
+            categoryField: "category"
+            }));
+            series.data.setAll([
+            { value: {{ emotionResult['predictions'][0]  }}, category: "Angry" },
+            { value: {{ emotionResult['predictions'][1]  }}, category: "Disgust" },
+            { value: {{ emotionResult['predictions'][2]  }}, category: "Fear" },
+            { value: {{ emotionResult['predictions'][3]  }}, category: "Happiness" },
+            { value: {{ emotionResult['predictions'][4]  }}, category: "Sadness" },
+            { value: {{ emotionResult['predictions'][5]  }}, category: "Surprise" },
+            { value: {{ emotionResult['predictions'][6]  }}, category: "Neutral" },
+            ]);
+ 
+
+            series.appear(1000, 100);
+
+        {% endif %}
+    {% endif %}
+
+    {% if hastext == True %}
+        var root1 = am5.Root.new("chartdiv1");
+        root1.setThemes([
+        am5themes_Animated.new(root1)
+        ]);
+        var chart1 = root1.container.children.push(am5percent.PieChart.new(root1, {
+        layout: root1.verticalLayout
+        }));
+        var series1 = chart1.series.push(am5percent.PieSeries.new(root1, {
+        valueField: "value",
+        categoryField: "category"
+        }));
+        series1.data.setAll([
+        { value: {{ sentiment['neg'] }}, category: "Negative" },
+        { value: {{ sentiment['neu'] }}, category: "Neutral" },
+        { value: {{ sentiment['pos'] }}, category: "Positive" },
+        ]);
+        series1.appear(1000, 100);
+
+    {% endif %}
+    
+    });
+
+    </script>
+
+</html>

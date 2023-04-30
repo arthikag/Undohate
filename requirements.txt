@@ -1,0 +1,18 @@
+pip install flask  
+pip install joblib
+pip install sklearn
+pip install pandas
+pip install nltk
+pip install emoji
+pip install spacy
+pip install profanity_filter
+python -m spacy download en
+pip install SpeechRecognition
+pip install pydub
+pip install pillow
+pip install pytesseract
+pip install moviepy
+pip install opencv-python
+pip install tensorflow
+pip install tweepy
+pip install vaderSentiment
